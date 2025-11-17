@@ -1,0 +1,178 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Ajouter un Événement</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="eventForm" (submit)="onSubmit()">
+            <!-- Titre -->
+            <div class="mb-1">
+              <label class="form-label">Titre</label>
+              <input type="text"class="form-control"formControlName="title" placeholder="title"/>
+            </div>
+            <div *ngIf="title?.invalid && title?.touched">
+              <small *ngIf="title?.hasError('required')"style="color: red">
+                This field is required
+              </small>
+              <small *ngIf="title?.hasError('minlength')" style="color: red">
+                This field must contain at least 5 caracters
+              </small>
+              <small *ngIf="title?.hasError('pattern')" style="color: red">
+                This field must respect the pattern
+              </small>
+            </div>
+            <!-- Description -->
+            <div class="mb-1">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" rows="3" placeholder="Description" formControlName="description"></textarea>
+            </div>
+            <div *ngIf="description?.invalid && description?.touched">
+              <small *ngIf="description?.hasError('required')"style="color: red">
+                This field is required
+              </small>
+              <small *ngIf="description?.hasError('minlength')" style="color: red">
+                This field must contain at least 30 caracters
+              </small>
+            </div>
+            <!-- Date -->
+            <div class="mb-1">
+              <label class="form-label">Date</label>
+              <input type="datetime-local" class="form-control" formControlName="date">
+            </div>
+            <small *ngIf="date?.invalid && date?.touched">
+              <small *ngIf="date?.hasError('required')"style="color: red">
+                This field is required
+              </small>
+              <small *ngIf="date?.errors?.['futureDateInvalid']"  style="color: red">
+                The date should be in 8 days minimum
+              </small>
+            </small>
+
+            <!-- Lieu -->
+            <div class="mb-1">
+              <label class="form-label">Lieu</label>
+              <input type="text" class="form-control" placeholder="Lieu" formControlName="place">
+            </div>
+            <div *ngIf="place?.invalid && place?.touched">
+              <small *ngIf="place?.hasError('required')"style="color: red">
+                This field is required
+              </small>
+              </div>
+            <!-- Prix -->
+            <div class="mb-1">
+              <label class="form-label">Prix</label>
+              <input type="number" class="form-control" placeholder="Prix" formControlName="price">
+            </div>
+            <div *ngIf="price?.invalid && price?.touched">
+              <small *ngIf="price?.hasError('required')"style="color: red">
+                This field is required
+              </small>
+              <small *ngIf="price?.hasError('pattern')" style="color: red">
+                The price must respect the pattern
+              </small>
+            </div>
+            <!-- Image -->
+            <div class="mb-1">
+              <label class="form-label">Image</label>
+              <input type="text" class="form-control" placeholder="URL de l'image">
+            </div>
+
+            <!-- Nombre de places -->
+            <div class="mb-1">
+              <label class="form-label">Nombre de places</label>
+              <input type="number" class="form-control" placeholder="Nombre de places" formControlName="nbPlace">
+            </div>
+            <div *ngIf="nbPlace?.invalid && nbPlace?.touched">
+              <small *ngIf="nbPlace?.hasError('required')"style="color: red">
+                This field is required
+              </small>
+              <small *ngIf="nbPlace?.hasError('pattern')" style="color: red">
+                The number of places must respect the pattern
+              </small>
+            </div>
+            <!-- ADRESSE DÉTAILLÉE -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Adresse détaillée</label>
+              <div formGroupName="detailedAddress" >
+                <!-- Rue/Avenue -->
+                <div class="mb-2">
+                  <label class="form-label">Rue/Avenue *</label>
+                  <input type="text" class="form-control" formControlName="street" placeholder="Ex: Avenue de la Liberation">
+                <div *ngIf="street?.invalid && street?.touched">
+                  <small *ngIf="street?.hasError('required')" style="color: red">
+                    La rue est obligatoire
+                  </small>
+                </div>
+            </div>
+            <div class="row">
+            <!-- Ville -->
+              <div class="col-md-6 mb-2">
+                <label class="form-label">Ville *</label>
+                <input type="text" class="form-control" formControlName="city" placeholder="Ex: Ariana">
+                <div *ngIf="city?.invalid && city?.touched">
+                  <small *ngIf="city?.hasError('required')" style="color: red">
+                    La ville est obligatoire
+                  </small>
+                </div>
+
+              </div>
+            <!-- Gouvernorat -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Gouvernorat *</label>
+              <input type="text" class="form-control" formControlName="governorate" placeholder="Ex: Ariana">
+              <div *ngIf="governorate?.invalid && governorate?.touched">
+                <small *ngIf="governorate?.hasError('required')" style="color: red">
+                  Le gouvernorat est obligatoire
+                </small>
+              </div>
+            </div>
+          </div>
+          <!-- Code postal -->
+          <div class="mb-2">
+  <label class="form-label">Code postal *</label>
+  <input type="text" class="form-control" formControlName="zipcode" placeholder="Ex: 2080">
+  <div *ngIf="zipcode?.invalid && zipcode?.touched">
+    <small style="color: red" *ngIf="zipcode?.hasError('required')">
+      Le code postal est obligatoire
+    </small>
+    <small style="color: red" *ngIf="zipcode?.hasError('pattern')">
+      Le code postal doit contenir 4 chiffres
+    </small>
+  </div>
+</div>
+        </div>
+      </div>
+            <div formArrayName="domaines">
+              <label>Domaines</label>
+              <div *ngFor="let domainCtrl of domaines.controls; let i = index">
+                <input [formControlName]="i" />
+                <div *ngIf="domainCtrl.touched && domainCtrl.invalid">
+                  <small *ngIf="domainCtrl.errors?.['required']">
+                    Le domaine est requis.
+                  </small>
+                  <small *ngIf="domainCtrl.errors?.['minlength']">
+                    Minimum 3 caractères.
+                  </small>
+                  <small *ngIf="domainCtrl.errors?.['maxlength']">
+                    Maximum 20 caractères.
+                  </small>
+                </div>
+              </div>
+              <button type="button" (click)="addDomain()">
+                Ajouter un domaine
+              </button>
+            </div>
+            <!-- Bouton -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success btn-lg" [disabled]="eventForm.invalid">
+                Créer l'Événement
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

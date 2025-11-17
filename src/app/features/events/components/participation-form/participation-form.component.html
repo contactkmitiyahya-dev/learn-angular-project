@@ -1,0 +1,58 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-light">
+          <h3 class="card-title mb-0">Participation à l'événement</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="participationForm" (ngSubmit)="onSubmit()">
+            <!-- Champ Adresse e-mail -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Adresse e-mail</label>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="foulen.foulen@gmail.com"
+                formControlName="email"
+                id="email">
+              <div *ngIf="email?.invalid && email?.touched">
+                <small *ngIf="email?.hasError('required')" style="color: red">L'adresse e-mail est requise.</small>
+                <small *ngIf="email?.hasError('pattern')" style="color: red">Veuillez saisir une adresse e-mail valide.</small>
+              </div>
+            </div>
+
+            <!-- Champ Nombre de places -->
+            <div class="mb-3">
+              <label for="places" class="form-label">Nombre de places</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="places">
+              <div *ngIf="places?.invalid && places?.touched" class="text-danger mt-1">
+                <small *ngIf="places?.hasError('required')">Le nombre de places est requis.</small>
+                <small *ngIf="places?.hasError('min')">Le nombre de places doit être d'au moins 1.</small>
+              </div>
+            </div>
+
+            <!-- Affichage du prix total seulement quand le champ est valide et perdu le focus -->
+            <div class="mb-4" *ngIf="showTotalPrice && places?.valid">
+              <label class="form-label fw-bold">Prix total</label>
+              <div class="fs-4 text-success">{{ totalPrice }} €</div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-100 py-2"
+              [disabled]="!participationForm.valid">
+              Soumettre
+            </button>
+            <div *ngFor="let participation of participations">
+  {{ participation.email }} - {{ participation.places }} places - {{ participation.totalPrice }}€
+</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

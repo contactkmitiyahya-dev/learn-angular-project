@@ -1,0 +1,23 @@
+<div class="container py-4">
+  <h2 class="mb-3 text-center text-primary">Liste des événements</h2>
+
+  <input
+    type="text"
+    class="form-control form-control-lg mb-4 shadow-sm"
+    placeholder="Rechercher un événement..."
+    [(ngModel)]="searchItem"
+  />
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let event of events | contains: searchItem">
+      <app-event-card [event]="event" (notifLike)="whenClicked($event)"
+        (notifBuy)="buyTicket($event)">
+      </app-event-card>
+    </div>
+  </div>
+  <div class="text-center mt-3">
+    <button class="btn btn-sm btn-primary flex-fill" routerLink="addEvent">Proposer un évènement</button>
+  </div>
+  <div class="text-center mt-3">
+    <button class="btn btn-sm btn-success flex-fill" routerLink="users">calculer les Utilisateurs</button>
+  </div>
+</div>
