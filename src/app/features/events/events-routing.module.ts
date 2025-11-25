@@ -15,8 +15,8 @@ const routes: Routes = [
       { path: '', component: ListEventComponent },
       { path: 'addEvent', component: AddEventComponent },
       {path:'users' , component : ListUserComponent},
+      { path: ':id', component: EventDetailComponent },
       { path:'participer/:id/:price',component:ParticipationFormComponent},
-      { path: ':id', component: EventDetailComponent }
     ]
   }
 ];

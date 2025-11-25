@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ParticipationFormComponent {
   eventId!: number;
   pricePerPlace!: number;
-  showTotalPrice = true;
+  showTotalPrice = false;
 
   participations: any[] = [];
 
@@ -48,7 +48,7 @@ export class ParticipationFormComponent {
   }
 
   onPlacesBlur() {
-    if (this.places?.valid) {
+    if (this.places?.valid && this.places.value > 0) {
       this.showTotalPrice = true;
     }
   }
@@ -69,7 +69,7 @@ export class ParticipationFormComponent {
         email: '',
         places: 1
       });
-      this.showTotalPrice = true;
+      this.showTotalPrice = false;
     }
   }
 }
