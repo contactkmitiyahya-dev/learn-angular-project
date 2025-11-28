@@ -38,13 +38,21 @@ export class ListEventComponent {
     );
   }
 
-  listEvent : Event[] = [];
+  listEvent : EventModel[] = [];
   ngOnInit(){
     this.backendService.getAllEventsFromBackend().subscribe({
       next:(response) => {
         this.listEvent = response.body || [];
         console.log(response.status+" : " +response.statusText)},
         error:(error)=>console.log(error?.error?.message),
+    });
+    this.backendService.getEventsWithTVA().subscribe({
+      next: (eventsWithTVA) => {
+        console.log('Événements avec TVA:', eventsWithTVA);
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des événements avec TVA:', error);
+      }
     });
   }
 }
