@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { EventsService } from '../../../../data-access/events.service';
 import { EventModel } from '../../../../models/event';
+import { BackendServiceService } from '../../../../data-access/backend-service.service';
 
 @Component({
   selector: 'app-list-event',
@@ -10,7 +11,7 @@ import { EventModel } from '../../../../models/event';
 export class ListEventComponent {
   searchItem: string = '';
 
-  constructor(private eventsService: EventsService) {}
+  constructor(private eventsService: EventsService ,private backendService : BackendServiceService) {}
 
   get events() {
     return this.eventsService.getAllEvents();
@@ -35,5 +36,15 @@ export class ListEventComponent {
       eventItem.title.toLowerCase().includes(this.searchItem.toLowerCase()) ||
       eventItem.place.toLowerCase().includes(this.searchItem.toLowerCase())
     );
+  }
+
+  listEvent : Event[] = [];
+  ngOnInit(){
+    this.backendService.getAllEventsFromBackend().subscribe({
+      next:(response) => {
+        this.listEvent = response.body || [];
+        console.log(response.status+" : " +response.statusText)},
+        error:(error)=>console.log(error?.error?.message),
+    });
   }
 }
